@@ -68,4 +68,5 @@ class SkillController extends Controller
             'message' => 'Skill berhasil dihapus'
         ]);
     }
+    // PFECMWEWOIJFC0IOHWRE
 }

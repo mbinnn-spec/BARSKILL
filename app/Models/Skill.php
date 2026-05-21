@@ -21,4 +21,5 @@ class Skill extends Model
             ->withPivot('rating', 'is_active')
             ->withTimestamps();
     }
+    
 }

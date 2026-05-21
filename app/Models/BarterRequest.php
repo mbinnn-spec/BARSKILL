@@ -10,13 +10,11 @@ class BarterRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'from_user_id',
-        'to_user_id',
         'skill_id',
-        'date',
-        'time',
+        'requester_name',
+        'session_date',
         'duration',
-        'note',
+        'notes',
         'status'
     ];
 

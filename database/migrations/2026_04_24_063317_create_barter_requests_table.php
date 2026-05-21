@@ -13,16 +13,22 @@ return new class extends Migration
     {
 Schema::create('barter_requests', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('from_user_id')->constrained('users')->cascadeOnDelete();
-    $table->foreignId('to_user_id')->constrained('users')->cascadeOnDelete();
-    $table->foreignId('skill_id')->constrained()->cascadeOnDelete();
 
-    $table->date('date');
-    $table->time('time');
-    $table->integer('duration'); // menit
-    $table->text('note')->nullable();
+    $table->foreignId('skill_id')->constrained()->onDelete('cascade');
 
-    $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+    $table->string('requester_name');
+
+    $table->date('session_date');
+
+    $table->integer('duration');
+
+    $table->text('notes')->nullable();
+
+    $table->enum('status', [
+        'menunggu',
+        'disetujui',
+        'ditolak'
+    ])->default('menunggu');
 
     $table->timestamps();
 });

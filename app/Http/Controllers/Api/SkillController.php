@@ -8,38 +8,47 @@ use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {
-    // 🔹 GET semua skill
+    //  GET semua skill
     public function index()
     {
         return response()->json(Skill::all());
     }
 
-    // 🔹 POST tambah skill
+    //  POST tambah skill
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|in:akademik,non_akademik',
-            'description' => 'nullable|string'
+        $skill = Skill::create([
+            'name' => $request->name,
+            'category' => $request->category,
+            'description' => $request->description
         ]);
 
-        $skill = Skill::create($request->all());
-
-        return response()->json([
+    return response()->json([
+        'success' => true,
             'message' => 'Skill berhasil ditambahkan',
             'data' => $skill
-        ], 201);
+        ]);
     }
 
-    // 🔹 GET detail skill
+    //  GET detail skill
     public function show($id)
     {
-        $skill = Skill::findOrFail($id);
+        $skill = Skill::find($id);
 
-        return response()->json($skill);
+        if (!$skill) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Skill tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $skill
+        ]);
     }
 
-    // 🔹 PUT update skill
+    //  PUT update skill
     public function update(Request $request, $id)
     {
         $skill = Skill::findOrFail($id);
@@ -68,5 +77,5 @@ class SkillController extends Controller
             'message' => 'Skill berhasil dihapus'
         ]);
     }
-    // PFECMWEWOIJFC0IOHWRE
+
 }

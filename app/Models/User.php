@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // 🔗 Skill
+    //  Skill
     public function skills()
     {
         return $this->belongsToMany(Skill::class, 'user_skills')
@@ -34,7 +34,7 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    // 🔁 Barter
+    // Barter
     public function sentBarters()
     {
         return $this->hasMany(BarterRequest::class, 'from_user_id');
@@ -45,7 +45,7 @@ class User extends Authenticatable
         return $this->hasMany(BarterRequest::class, 'to_user_id');
     }
 
-    // 💬 Chat
+    //  Chat
     public function chatsAsUser1()
     {
         return $this->hasMany(Chat::class, 'user1_id');
@@ -56,7 +56,7 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'user2_id');
     }
 
-    // 🔔 Notif
+    //  Notif
     public function notifications()
     {
         return $this->hasMany(Notification::class);

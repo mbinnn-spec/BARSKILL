@@ -24,4 +24,13 @@ class BarterRequestController extends Controller
             'data' => $barter
         ]);
     }
+    public function index()
+    {
+        $barters = BarterRequest::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $barters
+        ]);
+    }
 }

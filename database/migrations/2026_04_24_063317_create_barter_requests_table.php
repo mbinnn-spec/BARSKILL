@@ -14,7 +14,9 @@ return new class extends Migration
 Schema::create('barter_requests', function (Blueprint $table) {
     $table->id();
 
-    $table->foreignId('skill_id')->constrained()->onDelete('cascade');
+    $table->foreignId('skill_id')
+          ->constrained()
+          ->onDelete('cascade');
 
     $table->string('requester_name');
 

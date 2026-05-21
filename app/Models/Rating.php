@@ -10,25 +10,9 @@ class Rating extends Model
     use HasFactory;
 
     protected $fillable = [
-        'barter_request_id',
-        'from_user_id',
-        'to_user_id',
+        'skill_id',
+        'user_id',
         'rating',
-        'review'
+        'comment'
     ];
-
-    public function barter()
-    {
-        return $this->belongsTo(BarterRequest::class);
-    }
-
-    public function fromUser()
-    {
-        return $this->belongsTo(User::class, 'from_user_id');
-    }
-
-    public function toUser()
-    {
-        return $this->belongsTo(User::class, 'to_user_id');
-    }
 }

@@ -11,14 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ratings', function (Blueprint $table) {
+    Schema::create('ratings', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('barter_request_id')->constrained()->cascadeOnDelete();
-        $table->foreignId('from_user_id')->constrained('users')->cascadeOnDelete();
-        $table->foreignId('to_user_id')->constrained('users')->cascadeOnDelete();
+
+        $table->foreignId('skill_id')
+            ->constrained()
+            ->onDelete('cascade');
+
+        $table->foreignId('user_id')
+            ->constrained()
+            ->onDelete('cascade');
 
         $table->integer('rating');
-        $table->text('review')->nullable();
+
+        $table->text('comment')->nullable();
 
         $table->timestamps();
     });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BarterRequestController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\RatingController;
+use App\Http\Controllers\Api\UserController;
 
 // skill
 Route::apiResource('skills', SkillController::class);
@@ -15,8 +16,6 @@ Route::apiResource('skills', SkillController::class);
 Route::apiResource('barter-requests', BarterRequestController::class);
 //post
 Route::post('/barter', [BarterRequestController::class, 'store']);
-//read
-Route::apiResource('barter-requests', BarterRequestController::class);
 //login/logout
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
@@ -26,6 +25,8 @@ Route::get('/chats', [ChatController::class, 'index']);
 //message
 Route::post('/messages', [MessageController::class, 'store']);
 Route::get('/messages/{chat_id}', [MessageController::class, 'index']);
-//routes
+//rating
 Route::post('/ratings', [RatingController::class, 'store']);
 Route::get('/ratings', [RatingController::class, 'index']);
+//user
+Route::apiResource('users', UserController::class);

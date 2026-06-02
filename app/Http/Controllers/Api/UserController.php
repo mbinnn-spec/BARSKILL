@@ -45,7 +45,19 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
+        $user = User::find($id);
 
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
     }
 
     /**
@@ -95,5 +107,52 @@ class UserController extends Controller
         'success' => true,
         'message' => 'Akun berhasil dihapus'
     ]);
+    }
+
+    /**
+     * Upload profile image for user.
+     */
+    public function uploadProfileImage(Request $request, string $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User tidak ditemukan'
+            ], 404);
+        }
+
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+        ]);
+
+        if ($request->hasFile('profile_image')) {
+            // Delete old file if exists
+            if ($user->profile_image) {
+                $oldPath = public_path($user->profile_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+
+            $file = $request->file('profile_image');
+            $filename = time() . '_' . $file->hashName();
+            $file->move(public_path('profile_images'), $filename);
+            
+            $user->profile_image = 'profile_images/' . $filename;
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Foto profil berhasil diperbarui',
+                'data' => $user
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'File tidak ditemukan'
+        ], 400);
     }
 }

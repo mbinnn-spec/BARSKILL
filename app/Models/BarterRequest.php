@@ -15,7 +15,8 @@ class BarterRequest extends Model
         'session_date',
         'duration',
         'notes',
-        'status'
+        'status',
+        'is_rated'
     ];
 
     public function fromUser()
@@ -31,6 +32,11 @@ class BarterRequest extends Model
     public function skill()
     {
         return $this->belongsTo(Skill::class);
+    }
+
+    public function requesterUser()
+    {
+        return $this->belongsTo(User::class, 'requester_name', 'name');
     }
 
     public function schedule()

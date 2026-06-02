@@ -12,12 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('skills', function (Blueprint $table) {
-    $table->id();
-    $table->string('name');
-    $table->enum('category', ['akademik', 'non_akademik']);
-    $table->text('description')->nullable();
-    $table->timestamps();
-});
+            $table->id();
+            $table->string('name');
+            $table->enum('category', ['akademik', 'non_akademik']);
+            $table->text('description')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('approved');
+            $table->timestamps();
+        });
     }
 
     /**

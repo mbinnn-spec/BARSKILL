@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
-{
-    use HasFactory, Notifiable;
+    class User extends Authenticatable
+    {
+        use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'profile_image',
+        'last_seen'
     ];
 
     protected $hidden = [
@@ -24,7 +27,18 @@ class User extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
+        'last_seen' => 'datetime',
     ];
+
+    protected $appends = ['is_online'];
+
+    public function getIsOnlineAttribute()
+    {
+        if (!$this->last_seen) {
+            return false;
+        }
+        return $this->last_seen->gt(now()->subSeconds(15));
+    }
 
     //  Skill
     public function skills()

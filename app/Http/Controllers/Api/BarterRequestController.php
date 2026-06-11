@@ -127,4 +127,30 @@ class BarterRequestController extends Controller
             ], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $barter = BarterRequest::find($id);
+
+            if (!$barter) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Barter tidak ditemukan'
+                ], 404);
+            }
+
+            $barter->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Ajuan barter berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

@@ -170,4 +170,31 @@ class MessageController extends Controller
             'message' => 'File tidak ditemukan'
         ], 400);
     }
+
+    public function destroy($id)
+    {
+        $message = Message::find($id);
+        if (!$message) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pesan tidak ditemukan'
+            ], 404);
+        }
+
+        // If it's an image, delete the physical file
+        if (str_starts_with($message->message, '__IMAGE__:')) {
+            $imagePath = str_replace('__IMAGE__:', '', $message->message);
+            $fullPath = public_path($imagePath);
+            if (file_exists($fullPath)) {
+                @unlink($fullPath);
+            }
+        }
+
+        $message->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Pesan berhasil dihapus'
+        ]);
+    }
 }

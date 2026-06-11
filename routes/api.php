@@ -24,10 +24,13 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/chats/all', [ChatController::class, 'allChats']);
 Route::post('/chats', [ChatController::class, 'store']);
 Route::get('/chats', [ChatController::class, 'index']);
+Route::get('/chats/{id}', [ChatController::class, 'show']);
+Route::delete('/chats/{id}', [ChatController::class, 'destroy']);
 //message
 Route::post('/messages', [MessageController::class, 'store']);
 Route::post('/messages/upload-image', [MessageController::class, 'uploadImage']);
 Route::get('/messages/{chat_id}', [MessageController::class, 'index']);
+Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
 //rating
 Route::post('/ratings', [RatingController::class, 'store']);
 Route::get('/ratings', [RatingController::class, 'index']);

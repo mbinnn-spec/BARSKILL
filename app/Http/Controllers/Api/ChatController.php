@@ -98,4 +98,52 @@ class ChatController extends Controller
             'data' => $chats
         ]);
     }
+
+    public function show($id)
+    {
+        $chat = Chat::with(['user1', 'user2'])->find($id);
+        if (!$chat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Chat tidak ditemukan'
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $chat
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $chat = Chat::find($id);
+        if (!$chat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Chat room tidak ditemukan'
+            ], 404);
+        }
+
+        // Delete all messages in the chat
+        $messages = Message::where('chat_id', $id)->get();
+        foreach ($messages as $message) {
+            // Delete physical image file if any
+            if (str_starts_with($message->message, '__IMAGE__:')) {
+                $imagePath = str_replace('__IMAGE__:', '', $message->message);
+                $fullPath = public_path($imagePath);
+                if (file_exists($fullPath)) {
+                    @unlink($fullPath);
+                }
+            }
+            $message->delete();
+        }
+
+        // Delete the chat room itself
+        $chat->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Seluruh percakapan berhasil dihapus'
+        ]);
+    }
 }
